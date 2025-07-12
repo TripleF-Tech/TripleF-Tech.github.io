@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>王祈 (Samuel Wang) - 互動式個人資料</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f3eadc;
+            --text-color: #7e6040;
+            --card-bg: #ffffff;
+        }
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+        .card-flip {
+            perspective: 1000px;
+        }
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.7s;
+            transform-style: preserve-3d;
+        }
+        .card-flip.is-flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 0.75rem;
+            padding: 1rem;
+        }
+        .card-back {
+            background-color: var(--text-color);
+            color: var(--bg-color);
+            transform: rotateY(180deg);
+        }
+        .progress-bar-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background-color: rgba(126, 96, 64, 0.2);
+            z-index: 50;
+        }
+        .progress-bar {
+            height: 100%;
+            background-color: var(--text-color);
+            width: 0%;
+            transition: width 0.3s ease-out;
+        }
+        .modal {
+            transition: opacity 0.3s ease;
+        }
+        .section-fade-in {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .section-fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .accordion-title svg {
+            transition: transform 0.3s ease;
+        }
+        .accordion-item.open .accordion-title svg {
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Progress Bar -->
+    <div class="progress-bar-container">
+        <div id="progressBar" class="progress-bar"></div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container mx-auto p-4 md:p-8 max-w-5xl">
+
+        <!-- Welcome Section -->
+        <header id="welcome" class="text-center py-16 section-fade-in">
+            <h1 class="text-4xl md:text-5xl font-bold" style="color: #7e6040;">王祈 Samuel Wang</h1>
+            <p class="text-xl md:text-2xl font-semibold mt-2" style="color: #7e6040;">升學輔導顧問 | 數學教育品牌經營人</p>
+            <p class="mt-4 max-w-2xl mx-auto" style="color: #7e6040;">6年家教經驗，深耕個人化數學輔導與家教培訓，助您的孩子邁向理想學府。</p>
+            <button onclick="startTour()" class="mt-8 text-white font-bold py-3 px-8 rounded-full transition-transform transform hover:scale-105 shadow-lg" style="background-color: #7e6040; color: #f3eadc;">
+                開啟互動導覽 (預計10分鐘)
+            </button>
+        </header>
+
+        <!-- Dynamic Content Sections -->
+        <main id="tourContent" class="space-y-20">
+
+            <!-- My Story -->
+            <section id="story" class="section-fade-in">
+                <h2 class="text-3xl font-bold text-center mb-12">我的故事與成長軌跡</h2>
+                <div class="relative border-l-2" style="border-color: rgba(126, 96, 64, 0.3);">
+                    <!-- Timeline Item 1 -->
+                    <div class="mb-10 ml-10">
+                        <span class="absolute flex items-center justify-center w-8 h-8 rounded-full -left-4 ring-8 ring-white" style="background-color: rgba(126, 96, 64, 0.1); ring-color: var(--bg-color);">
+                            <svg class="w-5 h-5" style="color: #7e6040;" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path></svg>
+                        </span>
+                        <h3 class="text-xl font-semibold">專業起點</h3>
+                        <p class="mt-1">6年家教經驗，曾任超詳解營運長，現為祈育教育創辦人。</p>
+                    </div>
+                    <!-- Timeline Item 2 -->
+                    <div class="mb-10 ml-10">
+                        <span class="absolute flex items-center justify-center w-8 h-8 rounded-full -left-4 ring-8 ring-white" style="background-color: rgba(126, 96, 64, 0.1); ring-color: var(--bg-color);">
+                             <svg class="w-5 h-5" style="color: #7e6040;" fill="currentColor" viewBox="0 0 20 20"><path d="M10.394 2.08a1 1 0 00-.788 0l-7 3.5a1 1 0 00.002 1.84L10 10.4l7.392-2.98a1 1 0 00.002-1.84l-7-3.5zM10 11.586L2.608 8.5l7.392 2.98 7.392-2.98L10 11.586zM10 17.414L2.608 14.33l7.392 2.98 7.392-2.98L10 17.414z"></path></svg>
+                        </span>
+                        <h3 class="text-xl font-semibold">成長型心態</h3>
+                        <p class="mt-1">「看似神經病的學習過程」與「上帝的啟示」奠定了我永不放棄的教學基礎。</p>
+                        <button onclick="showModal('成長心態', '我的教學與創業理念深受「成長型心態」影響。我相信每一次的挑戰，無論是學業上的難題還是事業上的瓶頸，都是成長的契機。我將這種信念傳遞給學生，鼓勵他們不畏懼失敗，從錯誤中學習，最終實現自我超越。')" class="font-semibold mt-2" style="color: #7e6040;">了解更多 &rarr;</button>
+                    </div>
+                    <!-- Timeline Item 3 -->
+                    <div class="mb-10 ml-10">
+                        <span class="absolute flex items-center justify-center w-8 h-8 rounded-full -left-4 ring-8 ring-white" style="background-color: rgba(126, 96, 64, 0.1); ring-color: var(--bg-color);">
+                           <svg class="w-5 h-5" style="color: #7e6040;" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path></svg>
+                        </span>
+                        <h3 class="text-xl font-semibold">挑戰與學習</h3>
+                        <p class="mt-1">經歷過離開經營四年的團隊、投資交易曾賠7位數的挫折。</p>
+                        <button onclick="showModal('從挫折中學習', '2024年，我做出了離開共同經營四年團隊的艱難決定。雖然充滿不捨，但這次經歷讓我更深刻地理解了團隊合作與願景對齊的重要性。同時間，在投資市場上的重大虧損，讓我學會了風險控管與保持冷靜的智慧。這些看似失敗的經歷，都轉化為我今日面對挑戰時最寶貴的資產。')" class="font-semibold mt-2" style="color: #7e6040;">了解更多 &rarr;</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Achievements -->
+            <section id="achievements" class="section-fade-in">
+                <h2 class="text-3xl font-bold text-center mb-12">卓越成就與影響力</h2>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+                    <!-- Achievement Card -->
+                    <div class="card-flip h-40 md:h-48" onclick="this.classList.toggle('is-flipped')">
+                        <div class="card-inner">
+                            <div class="card-front bg-white shadow-lg rounded-xl flex-col justify-center items-center cursor-pointer">
+                                <p class="text-3xl md:text-4xl font-bold" style="color: #7e6040;">6.5萬+</p>
+                                <p class="font-semibold mt-2">IG粉絲</p>
+                            </div>
+                            <div class="card-back shadow-lg p-4 text-center">
+                                <p class="font-semibold">成功帶動教育內容行銷，透過優質內容與社群互動建立品牌信任。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Achievement Card -->
+                    <div class="card-flip h-40 md:h-48" onclick="this.classList.toggle('is-flipped')">
+                        <div class="card-inner">
+                            <div class="card-front bg-white shadow-lg rounded-xl flex-col justify-center items-center cursor-pointer">
+                                <p class="text-3xl md:text-4xl font-bold" style="color: #7e6040;">No.1</p>
+                                <p class="font-semibold mt-2">蝦皮參考書排行</p>
+                            </div>
+                            <div class="card-back shadow-lg p-4 text-center">
+                                <p class="font-semibold">開發的學習內容深受市場肯定，證明其教育價值與實用性。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Achievement Card -->
+                    <div class="card-flip h-40 md:h-48" onclick="this.classList.toggle('is-flipped')">
+                        <div class="card-inner">
+                            <div class="card-front bg-white shadow-lg rounded-xl flex-col justify-center items-center cursor-pointer">
+                                <p class="text-3xl md:text-4xl font-bold" style="color: #7e6040;">100+</p>
+                                <p class="font-semibold mt-2">校園巡迴演講</p>
+                            </div>
+                            <div class="card-back shadow-lg p-4 text-center">
+                                <p class="font-semibold">足跡遍布全台，影響超過12,000名學生，演講總距離超過10,000公里。</p>
+                            </div>
+                        </div>
+                    </div>
+                     <!-- Achievement Card -->
+                    <div class="card-flip h-40 md:h-48" onclick="this.classList.toggle('is-flipped')">
+                        <div class="card-inner">
+                            <div class="card-front bg-white shadow-lg rounded-xl flex-col justify-center items-center cursor-pointer">
+                                <p class="text-3xl md:text-4xl font-bold" style="color: #7e6040;">🏆</p>
+                                <p class="font-semibold mt-2">清大創業獎</p>
+                            </div>
+                            <div class="card-back shadow-lg p-4 text-center">
+                                <p class="font-semibold">受邀清大創業車庫，榮獲業師評選獎 & 最佳人氣獎，商業模式獲肯定。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Vision & Goals -->
+            <section id="vision" class="section-fade-in">
+                <h2 class="text-3xl font-bold text-center mb-12">未來藍圖與目標</h2>
+                <div class="flex flex-col md:flex-row justify-center items-center md:items-start md:space-x-8 space-y-8 md:space-y-0">
+                    <!-- Short Term -->
+                    <div class="text-center p-6 bg-white rounded-xl shadow-lg w-full md:w-1/3">
+                        <div class="text-2xl font-bold mb-2" style="color: #a88d70;">短期目標</div>
+                        <ul class="list-disc list-inside text-left">
+                            <li>第一批學生目標50人</li>
+                            <li>家教老師10人</li>
+                        </ul>
+                    </div>
+                    <!-- Mid Term -->
+                    <div class="text-center p-6 bg-white rounded-xl shadow-lg w-full md:w-1/3">
+                        <div class="text-2xl font-bold mb-2" style="color: #947553;">中期目標</div>
+                        <ul class="list-disc list-inside text-left">
+                            <li>學生目標100人</li>
+                            <li>培訓超過30位專業家教</li>
+                            <li>上架3套個人數學線上課程</li>
+                        </ul>
+                    </div>
+                    <!-- Long Term -->
+                    <div class="text-center p-6 bg-white rounded-xl shadow-lg w-full md:w-1/3">
+                        <div class="text-2xl font-bold mb-2" style="color: #7e6040;">長期目標</div>
+                        <ul class="list-disc list-inside text-left">
+                            <li>個人教學帳號10萬人追蹤</li>
+                            <li>穩定學生200人</li>
+                        </ul>
+                        <button onclick="showModal('長期願景', '我的終極目標是讓「祈育教育」成為台灣家教產業的指標性品牌。透過整合AI助教與真人輔導，我們將提供最全面、個人化的學習體驗，不僅是提升學生成績，更是要點燃他們對學習的熱情，讓優質的數學教育資源觸及全台灣每一個角落。')" class="font-semibold mt-4" style="color: #7e6040;">展開願景 &rarr;</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Expertise -->
+            <section id="expertise" class="section-fade-in">
+                <h2 class="text-3xl font-bold text-center mb-12">我的專業技能</h2>
+                <div class="p-6 bg-white rounded-xl shadow-lg">
+                    <p class="text-center opacity-70 mb-6">點擊技能標籤以查看相關案例</p>
+                    <div class="flex flex-wrap justify-center items-center gap-4">
+                        <button onclick="showModal('社群媒體行銷案例', '透過精準的內容策略與互動設計，我的個人教學IG帳號在短短四個月內，粉絲數從1萬增長至4萬，有效提升品牌知名度與學生諮詢量。')" class="text-lg font-semibold px-6 py-3 rounded-full transition hover:shadow-md" style="background-color: #f3eadc; color: #7e6040;">社群媒體行銷</button>
+                        <button onclick="showModal('教學品牌經營', '從課程設計、師資培訓到市場推廣，我建立了一套完整的品牌經營模式，成功打造出備受家長與學生信賴的「祈育教育」。')" class="text-lg font-semibold px-6 py-3 rounded-full transition hover:shadow-md" style="background-color: #f3eadc; color: #7e6040;">教學品牌經營</button>
+                        <button onclick="showModal('教學師資培訓', '我設計的師資培訓計畫，已成功幫助多位家教老師從零開始建立穩定的學生群，確保每一位團隊老師都能提供最高品質的教學。')" class="text-lg font-semibold px-6 py-3 rounded-full transition hover:shadow-md" style="background-color: #f3eadc; color: #7e6040;">教學師資培訓</button>
+                        <button onclick="showModal('金融專業應用', '我擁有證券、期貨等金融證照，這不僅是個人興趣，也讓我在經營事業時，具備更全面的財務規劃與風險管理能力。')" class="text-lg font-semibold px-6 py-3 rounded-full transition hover:shadow-md" style="background-color: #f3eadc; color: #7e6040;">理財規劃 & 金融證照</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Collaboration & Referrals -->
+            <section id="collaboration" class="section-fade-in">
+                <h2 class="text-3xl font-bold text-center mb-12">合作與引薦</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- I can help -->
+                    <div class="p-6 bg-white rounded-xl shadow-lg">
+                        <h3 class="text-2xl font-bold text-center mb-6">我能為您做什麼？</h3>
+                        <div class="space-y-4">
+                            <!-- Accordion Item 1 -->
+                            <div class="accordion-item border-b" style="border-color: rgba(126, 96, 64, 0.2);">
+                                <div class="accordion-title flex justify-between items-center p-4 cursor-pointer" onclick="toggleAccordion(this.parentElement)">
+                                    <h4 class="font-semibold">痛點1：「孩子要升學，但準備得很亂...」</h4>
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                </div>
+                                <div class="accordion-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
+                                    <p class="p-4 pt-0 opacity-80"><strong>解決方案：</strong>「我認識一個團隊，老師多是清大、台大背景，專門帶這種升學特殊需求。他們最貼近現在的學制和考試模式，能給予完整的計畫，對症下藥。」</p>
+                                </div>
+                            </div>
+                            <!-- Accordion Item 2 -->
+                             <div class="accordion-item border-b" style="border-color: rgba(126, 96, 64, 0.2);">
+                                <div class="accordion-title flex justify-between items-center p-4 cursor-pointer" onclick="toggleAccordion(this.parentElement)">
+                                    <h4 class="font-semibold">痛點2：「補習班沒效果，孩子還是學不會...」</h4>
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                </div>
+                                <div class="accordion-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
+                                    <p class="p-4 pt-0 opacity-80"><strong>解決方案：</strong>「我認識一個台清交團隊，他們會幫學生安排讀書計畫、追進度，還會陪聊、幫孩子調整心態。很多家長都說效果差很多，我可以幫你們拉群做升學諮詢，了解孩子狀況。」</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- I am seeking -->
+                    <div class="p-6 bg-white rounded-xl shadow-lg">
+                        <h3 class="text-2xl font-bold text-center mb-6">我尋求哪些引薦？</h3>
+                        <div class="space-y-2">
+                            <p><span class="font-bold">理想引薦：</span> 正在為孩子尋找升學或家教資源的家長。</p>
+                            <p class="mt-4"><span class="font-bold">業務人脈圈：</span></p>
+                            <ul class="list-disc list-inside opacity-80">
+                                <li>線上教學平台 (課程、家教)</li>
+                                <li>書籍與教具販售業</li>
+                                <li>家庭主婦社群 (潛在客戶或引薦者)</li>
+                                <li>學習診斷與心理諮詢機構</li>
+                                <li>咖啡廳/自習室/學習空間</li>
+                                <li>出版業與教材供應商</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal -->
+    <div id="modal" class="modal fixed inset-0 bg-black bg-opacity-60 z-50 flex justify-center items-center p-4 hidden opacity-0" onclick="closeModal()">
+        <div class="bg-white rounded-lg shadow-xl p-8 max-w-lg w-full" style="background-color: var(--card-bg);" onclick="event.stopPropagation()">
+            <h3 id="modal-title" class="text-2xl font-bold mb-4" style="color: var(--text-color);"></h3>
+            <p id="modal-content" style="color: var(--text-color);"></p>
+            <button onclick="closeModal()" class="mt-6 font-bold py-2 px-6 rounded-full transition" style="background-color: var(--text-color); color: var(--bg-color);">關閉</button>
+        </div>
+    </div>
+
+    <script>
+        // --- Interactive Tour & Progress Bar ---
+        function startTour() {
+            document.getElementById('story').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        window.addEventListener('scroll', () => {
+            const tourContent = document.getElementById('tourContent');
+            const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollTop = window.scrollY;
+            const progress = Math.min(100, Math.max(0, (scrollTop / scrollableHeight) * 100));
+            document.getElementById('progressBar').style.width = progress + '%';
+        });
+
+        // --- Fade-in sections on scroll ---
+        const sections = document.querySelectorAll('.section-fade-in');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.15 });
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            if(sections.length > 0) {
+                sections[0].classList.add('visible');
+            }
+        });
+
+        // --- Modal Logic ---
+        const modal = document.getElementById('modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalContent = document.getElementById('modal-content');
+
+        function showModal(title, content) {
+            modalTitle.textContent = title;
+            modalContent.innerHTML = content;
+            modal.classList.remove('hidden');
+            setTimeout(() => modal.classList.remove('opacity-0'), 10);
+        }
+
+        function closeModal() {
+            modal.classList.add('opacity-0');
+            setTimeout(() => modal.classList.add('hidden'), 300);
+        }
+
+        // --- Accordion Logic ---
+        function toggleAccordion(element) {
+            const content = element.querySelector('.accordion-content');
+            element.classList.toggle('open');
+            if (content.style.maxHeight) {
+                content.style.maxHeight = null;
+            } else {
+                content.style.maxHeight = content.scrollHeight + "px";
+            }
+        }
+    </script>
+</body>
+</html>
